@@ -1,0 +1,53 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+@import url(http://fonts.googleapis.com/css?family=Lora);
+body {
+  font-family: 'Lora', serif;
+}
+
+.hide {
+  display: none;
+}
+
+#chatlog {
+  padding: 5px 0;
+  margin: 5px 0;
+  height: 80%;
+  width: 500px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+#chatlog p {
+  margin: 0;
+  padding: 5px;
+}
+#chatlog strong {
+  font-family: 'Ubuntu', serif;
+}
+#chatlog p:nth-last-child(1) {
+  -webkit-animation: fadein 1s;
+  animation: fadein 1s;
+}
+#chatlog p:nth-child(even) strong {
+  color: red;
+}
+#chatlog p:nth-child(odd) strong {
+  color: blue;
+}
+
+@-webkit-keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,56 @@
+
+<html>
+  <head>
+    <title>Chat Testing</title>
+    <link rel="stylesheet" href="/css/main-style.css"/>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script>
+      var ws = new WebSocket('ws://sorcelator.koding.io:1234', 'echo-protocol');
+      function htmlEntities(str) {
+          return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+          }
+          
+      function updateScroll(){
+          var element = document.getElementById("chatlog");
+          element.scrollTop = element.scrollHeight;
+      }
+      
+      function sendMessage(){
+          var message = JSON.stringify({
+              un: $('#username').val(),
+              msg: $('#message').val()
+          });
+          ws.send(message);
+          $('#message').val('');
+      }
+      
+      
+      $(document).keypress(function(e){
+          if(e.which == 13){
+              sendMessage();
+          }
+      });
+      
+      ws.addEventListener('message', function(e){
+          try {
+              var stuff = JSON.parse(e.data);
+              console.log(stuff);
+          } catch (e) {
+              console.log('invalid json', e.data);
+              return;
+          }
+          
+           document.getElementById('chatlog').innerHTML += '<p>' + '<strong>' + htmlEntities(stuff.un) + '</strong>' + ': ' + htmlEntities(stuff.msg) + '</p>';
+          // $('#chatlog').append('<p id=\"' + msg_id + '\">' + '<strong>' + htmlEntities(stuff.un) + '</strong> :' + htmlEntities(stuff.msg) + '</p>')
+          
+          updateScroll();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="chatlog"></div>
+    <input type="text" placeholder="username" id="username"/>
+    <input type="text" placeholder="sendMessage" id="message"/>
+    <input type="button" value="send" onclick="sendMessage()"/>
+  </body>
+</html>
